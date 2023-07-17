@@ -1,0 +1,125 @@
+[project]
+name = "eq-devtools"
+description = "A CLI app to facilitate common development tasks."
+license.file = "LICENSE"
+readme = "README.md"
+dynamic = ["version"]
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.1.3",
+]
+
+[project.optional-dependencies]
+host = [
+  "hatchling",
+  "hatch-vcs",
+  "pip",
+]
+dev = [
+  "black==23.7.0",
+  "hatch-vcs",
+  "hatchling",
+  "isort",
+  "ruff==0.0.276"
+]
+docs = [
+  "mkdocs",
+  "mkdocs-material",
+  "mkdocs-material-extensions",
+  "mkdocstrings",
+  "mknotebooks",
+  "numpydoc",
+]
+test = [
+  "coverage",
+  "hypothesis",
+  "pytest",
+  "pytest-cov",
+  "pytest-doctestplus",
+  "toml",
+]
+
+[project.scripts]
+devtool = "eq.devtools.cli:cli"
+
+[project.urls]
+"repository" = "https://github.com/energy-quants/eq-devtools"
+
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+
+[tool.hatch]
+# https://github.com/ofek/hatch-vcs
+version.source = "vcs"
+version.raw-options = { version_scheme = "post-release" }
+# https://hatch.pypa.io/latest/config/build/
+build.include = ["/src"]
+build.hooks.vcs.version-file = "src/eq/devtools/_version.py"
+build.targets.wheel.strict-naming = false
+build.targets.wheel.packages = ["/src/eq"]
+build.targets.sdist.strict-naming = false
+build.targets.sdist.packages = ["/src/eq"]
+
+
+[tool.pytest.ini_options]
+# https://docs.pytest.org/en/7.1.x/reference/reference.html#ini-options-ref
+minversion = "7.3"
+testpaths = ["tests"]
+addopts = "-lv --tb=short --color=yes --code-highlight=yes --import-mode=importlib --doctest-modules --doctest-continue-on-failure --html=.build/test/html/test-report.html --self-contained-html --junit-xml=.build/test/test-results.xml  --cov=src/eq/devtools --cov-report=html:.build/test/html/cov --cov-report=xml:.build/test/coverage.xml"
+junit_family = "xunit2"
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+
+[tool.isort]
+# https://pycqa.github.io/isort/docs/configuration/options.html
+profile = "black"
+line_length = 88
+force_grid_wrap = 2
+multi_line_output=3
+include_trailing_comma = true
+lines_before_imports = 0
+lines_after_imports = 2
+force_alphabetical_sort_within_sections = true
+sections = [
+  "FUTURE",
+  "STDLIB",
+  "THIRDPARTY",
+  "FIRSTPARTY",
+  "LOCALFOLDER",
+]
+default_section = "THIRDPARTY"
+known_first_party = ["eq.devtools"]
+
+
+[tool.ruff]
+# https://beta.ruff.rs/docs/rules/
+select = [
+  "E",  # pycodestyle
+  "F",  # pyflakes
+  # "I",  # can't yet match isort config
+]
+line-length = 120
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.isort]
+combine-as-imports = false
+order-by-type = false
+lines-after-imports = 2
+split-on-trailing-comma = true
+known-first-party = ["eq.devtools"]
