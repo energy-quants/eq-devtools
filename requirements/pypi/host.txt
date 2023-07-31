@@ -1,0 +1,4 @@
+hatch-requirements-txt
+hatch-vcs
+hatchling
+pip

@@ -1,0 +1,6 @@
+mkdocs
+mkdocs-material
+mkdocs-material-extensions
+mkdocstrings
+mknotebooks
+numpydoc

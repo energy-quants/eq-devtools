@@ -9,14 +9,15 @@
 
 ## Development
 
-...
-
 
 ### Building
 
 This project uses `boa` for building:
+```
+devtool conda render --version 0.1.0
+```
 ```bash
-boa build --output-folder='./.build/dist' --pkg-format 2 recipe.yaml
+boa build --pkg-format 2 --output-folder='./.build/dist' './.build/conda'
 ```
 
 

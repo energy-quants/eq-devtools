@@ -1,0 +1,7 @@
+coverage
+hypothesis
+pytest
+pytest-cov
+pytest-doctestplus
+pytest-html
+toml
