@@ -1,15 +1,16 @@
 import click
 
-from .. import __version__
+
+__all__ = (
+    "test",
+)
 
 
 @click.group()
-@click.version_option(version=__version__)
-def cli():
+def test():
     pass
 
-
-@cli.command()
+@test.command()
 @click.option(
     "--name",
     help="The name of the person to greet.",
@@ -17,4 +18,3 @@ def cli():
 )
 def greet(name: str):
     click.echo(f"Hello {name}!")
-
