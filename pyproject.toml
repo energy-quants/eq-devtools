@@ -36,17 +36,23 @@ requires = [
 build-backend = "hatchling.build"
 
 
-[tool.hatch]
+[tool.hatch.version]
 # https://github.com/ofek/hatch-vcs
-version.source = "vcs"
-version.raw-options = { version_scheme = "post-release" }
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+version_scheme = "post-release"
+
+
+[tool.hatch.build]
 # https://hatch.pypa.io/latest/config/build/
-build.include = ["/src"]
-build.hooks.vcs.version-file = "src/eq/devtools/_version.py"
-build.targets.wheel.strict-naming = false
-build.targets.wheel.packages = ["/src/eq"]
-build.targets.sdist.strict-naming = false
-build.targets.sdist.packages = ["/src/eq"]
+include = ["/src"]
+hooks.vcs.version-file = "src/eq/devtools/_version.py"
+hooks.vcs.template = "__version__ = {version!r}"
+targets.wheel.strict-naming = false
+targets.wheel.packages = ["/src/eq"]
+targets.sdist.strict-naming = false
+targets.sdist.packages = ["/src/eq"]
 
 
 [tool.pytest.ini_options]
