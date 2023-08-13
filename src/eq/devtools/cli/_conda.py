@@ -1,8 +1,12 @@
 from pathlib import Path
+from typing  import Optional
 
 import click
 
-from eq.devtools.conda import render_recipe
+from eq.devtools.conda import (
+    build_package,
+    render_recipe,
+)
 
 
 __all__ = (
@@ -37,7 +41,7 @@ def conda():
 @click.option(
     "--output-path",
     type=str,
-    default="./.build/conda/recipe.yaml",
+    default="./.build/conda/recipe/recipe.yaml",
 )
 @click.option(
     "--debug/--no-debug",
@@ -55,6 +59,44 @@ def render(
         version=version,
         build_number=build_num,
         pyproject_file=pyproject_file,
+        output_path=output_path,
+        debug=debug,
+    )
+
+
+@conda.command()
+@click.option(
+    "--recipe-file",
+    type=Optional[str],
+    default=None,
+)
+@click.option(
+    "--build-num",
+    type=int,
+    default=0,
+    help="The build number of the package.",
+)
+@click.option(
+    "--output-path",
+    type=str,
+    default="./.build/conda/dist",
+)
+@click.option(
+    "--debug/--no-debug",
+    default=True,
+)
+def build(
+    recipe_file,
+    build_num,
+    output_path,
+    debug,
+) -> None:
+    """Build a conda package for the current project.
+
+    """
+    build_package(
+        build_number=build_num,
+        recipe_file=recipe_file,
         output_path=output_path,
         debug=debug,
     )

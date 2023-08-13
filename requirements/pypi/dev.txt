@@ -3,3 +3,4 @@ hatch-vcs
 hatchling
 isort
 ruff ==0.0.276
+setuptools-scm >=7.1.0

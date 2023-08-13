@@ -21,9 +21,9 @@ def render_recipe(
     version: str,
     build_number: int,
     pyproject_file: Path | str = Path("./pyproject.toml"),
-    output_path: Path | str = Path("./.build/conda/recipe.yaml"),
+    output_path: Path | str = Path("./.build/conda/recipe/recipe.yaml"),
     debug: bool = True
-) -> None:
+) -> Path:
     """Render a conda recipe from a `pyproject.toml` file.
 
     Parameters
@@ -40,8 +40,6 @@ def render_recipe(
         The license of the package.
     summary : str
         The summary of the package.
-    source_path : Path | str, optional
-        The path to the source code of the package, by default Path("../../")
 
     Returns
     -------
@@ -64,6 +62,8 @@ def render_recipe(
         f.write(recipe)
     if debug:
         os.system(f"bat {output_path.as_posix()}")
+
+    return output_path
 
 
 
@@ -119,8 +119,8 @@ def _render_recipe(
         The license of the package.
     summary : str
         The summary of the package.
-    source_path : Path | str, optional
-        The path to the source code of the package, by default Path("../../")
+    source_path : Path | str
+        The path to the source code of the package.
 
     Returns
     -------
@@ -147,9 +147,9 @@ def _render_recipe(
         for key, deps in requirements.items()
         if key in ('build', 'host', 'run')
     }
-    recipe['test']['files'] = ['tests/']
-    recipe['test']['commands'] = ['pytest']
-    recipe['test']['requires'] = requirements['test']
+    # recipe['test']['files'] = ['./tests/']
+    # recipe['test']['commands'] = ['tree ./']
+    # recipe['test']['requires'] = requirements['test']
     recipe['about']['home'] = url
     recipe['about']['license'] = license
     recipe['about']['summary'] = summary
