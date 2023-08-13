@@ -6,7 +6,7 @@ from pathlib import Path
 from textwrap import dedent
 
 import ruamel.yaml
-import toml
+import tomllib as toml
 from hatch_requirements_txt import load_requirements_files
 from ruamel.yaml.scalarstring import PreservedScalarString
 

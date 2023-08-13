@@ -8,17 +8,7 @@ dynamic = [
   "optional-dependencies",
   "version",
 ]
-requires-python = ">=3.10"
-
-[tool.hatch.metadata.hooks.requirements_txt]
-files = ["requirements/pypi/run.txt"]
-
-[tool.hatch.metadata.hooks.requirements_txt.optional-dependencies]
-dev = ["requirements/pypi/dev.txt"]
-docs = ["requirements/pypi/docs.txt"]
-host = ["requirements/pypi/host.txt"]
-test = ["requirements/pypi/test.txt"]
-
+requires-python = ">=3.11"
 
 [project.scripts]
 devtool = "eq.devtools.cli:cli"
@@ -40,10 +30,8 @@ build-backend = "hatchling.build"
 # https://github.com/ofek/hatch-vcs
 source = "vcs"
 
-
 [tool.hatch.version.raw-options]
 version_scheme = "post-release"
-
 
 [tool.hatch.build]
 # https://hatch.pypa.io/latest/config/build/
@@ -54,6 +42,15 @@ targets.wheel.strict-naming = false
 targets.wheel.packages = ["/src/eq"]
 targets.sdist.strict-naming = false
 targets.sdist.packages = ["/src/eq"]
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements/pypi/run.txt"]
+
+[tool.hatch.metadata.hooks.requirements_txt.optional-dependencies]
+dev = ["requirements/pypi/dev.txt"]
+docs = ["requirements/pypi/docs.txt"]
+host = ["requirements/pypi/host.txt"]
+test = ["requirements/pypi/test.txt"]
 
 
 [tool.pytest.ini_options]
