@@ -6,7 +6,11 @@ from pathlib import Path
 from textwrap import dedent
 
 import ruamel.yaml
-import tomllib as toml
+try:
+    import tomllib as toml
+except ModuleNotFoundError as exc:
+    import tomli as toml
+
 from hatch_requirements_txt import load_requirements_files
 from ruamel.yaml.scalarstring import PreservedScalarString
 
