@@ -75,7 +75,8 @@ def _parse_pyproject(
     pyproject_file: Path | str,
     /,
 ) -> dict[str, str]:
-    pyproject = toml.load(pyproject_file)
+    with pyproject_file.open('rb') as fp:
+        pyproject = toml.load(fp)
     metadata = dict(
         name = pyproject['project']['name'],
         url = pyproject['project']['urls']['repository'],
@@ -86,6 +87,12 @@ def _parse_pyproject(
 
 
 def _parse_requirements() -> dict[str, list[str]]:
+    # monkey-patch packaging to not normalize ruamel.yaml
+    # FIXME: implement a pypi mapping
+    import re
+    from packaging import utils
+    utils._canonicalize_regex = re.compile(r'[-_]+', re.UNICODE)
+
     requirements = defaultdict(list[str])
     for filepath in Path('requirements/').glob('**/*.txt'):
         deps, _ = load_requirements_files([filepath.as_posix()])
