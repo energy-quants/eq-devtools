@@ -5,9 +5,7 @@ from ._conda import conda
 from ._test import test
 
 
-__all__ = (
-    "cli",
-)
+__all__ = ("cli",)
 
 
 @click.group()
