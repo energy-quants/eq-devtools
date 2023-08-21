@@ -1,6 +1,12 @@
 import os
 from pathlib import Path
-from subprocess import check_output, CalledProcessError, Popen, PIPE, STDOUT
+from subprocess import (
+    CalledProcessError,
+    check_output,
+    PIPE,
+    Popen,
+    STDOUT,
+)
 
 from ._render import render_recipe
 
@@ -14,11 +20,11 @@ __all__ = (
 def get_version():
     cmd = "git describe --long"
     try:
-        output = check_output(cmd, stderr=STDOUT, encoding='utf-8', shell=True)
+        output = check_output(cmd, stderr=STDOUT, encoding="utf-8", shell=True)
     except Exception as exc:
         raise RuntimeError(exc.stdout) from exc
 
-    version, distance, sha = output.strip().split('-')
+    version, distance, sha = output.strip().split("-")
     distance = int(distance)
     if distance == 0:
         return version
@@ -26,18 +32,14 @@ def get_version():
         return f"{version}.post{distance:03d}+{sha[1:]}"
 
 
-
 def build_package(
     *,
     build_number: int = 0,
     recipe_file: Path | str | None = None,
     output_path: Path | str = Path("./.build/conda/dist"),
-    debug: bool = True
+    debug: bool = True,
 ) -> None:
-    """Build a conda package for the current project.
-
-
-    """
+    """Build a conda package for the current project."""
     version = get_version()
     os.environ["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
     if recipe_file is None:
@@ -77,7 +79,7 @@ def build_package(
         shell=True,
     ) as process:
         for line in process.stdout:
-            print(line, end='')
+            print(line, end="")
 
     if process.returncode != 0:
         raise CalledProcessError(process.returncode, process.args)

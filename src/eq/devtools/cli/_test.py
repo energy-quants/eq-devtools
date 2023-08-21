@@ -1,14 +1,13 @@
 import click
 
 
-__all__ = (
-    "test",
-)
+__all__ = ("test",)
 
 
 @click.group()
 def test():
     pass
+
 
 @test.command()
 @click.option(

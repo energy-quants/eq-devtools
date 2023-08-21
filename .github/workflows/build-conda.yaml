@@ -1,0 +1,25 @@
+name: build/conda
+run-name: ${{
+    format(
+      '[{0}] build/conda',
+      (github.event_name == 'pull_request' && format('pr/{0}', github.event.number)) ||
+      (github.event_name == 'push' && github.ref_name) ||
+      (github.event_name == 'release' && github.event.release.tag_name) ||
+       github.event_name
+    )
+  }}
+
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+
+jobs:
+  build_package:
+    name: Build Conda Package
+    uses: energy-quants/.github/.github/workflows/build-conda.yml@main

@@ -1,5 +1,4 @@
-from pathlib import Path
-from typing  import Optional
+from typing import Optional
 
 import click
 
@@ -9,9 +8,7 @@ from eq.devtools.conda import (
 )
 
 
-__all__ = (
-    "conda",
-)
+__all__ = ("conda",)
 
 
 @click.group()
@@ -91,9 +88,7 @@ def build(
     output_path,
     debug,
 ) -> None:
-    """Build a conda package for the current project.
-
-    """
+    """Build a conda package for the current project."""
     build_package(
         build_number=build_num,
         recipe_file=recipe_file,
