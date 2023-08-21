@@ -4,6 +4,7 @@ import click
 
 from eq.devtools.conda import (
     build_package,
+    publish_oci_artifact,
     render_recipe,
 )
 
@@ -94,4 +95,43 @@ def build(
         recipe_file=recipe_file,
         output_path=output_path,
         debug=debug,
+    )
+
+
+@conda.command()
+@click.option(
+    "--filepath", type=str, help="The filepath to the `.conda` package to publish."
+)
+@click.option(
+    "--owner",
+    type=str,
+    help="The GitHub user or organisation to publish the package to.",
+)
+@click.option(
+    "-v",
+    "--verbose",
+    is_flag=True,
+    default=False,
+)
+@click.option(
+    "--token",
+    type=Optional[str],
+    default=None,
+    help=(
+        "The GitHub token to use. "
+        "If not specified, the `GITHUB_TOKEN` env var will be used."
+    ),
+)
+def publish(
+    filepath,
+    owner,
+    verbose,
+    token,
+) -> None:
+    """Publish a conda package as an OCI artifact to `ghcr.io`."""
+    publish_oci_artifact(
+        filepath=filepath,
+        owner=owner,
+        verbose=verbose,
+        token=token,
     )
