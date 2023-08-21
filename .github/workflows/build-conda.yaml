@@ -11,12 +11,19 @@ run-name: ${{
 
 
 on:
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push
   push:
     branches:
       - main
+
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
   pull_request:
     branches:
       - main
+
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
+  release:
+    types: [published]
 
 
 jobs:
