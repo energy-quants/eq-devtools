@@ -9,7 +9,12 @@ from subprocess import (
 
 
 def publish_oci_artifact(
-    filepath: str | Path, *, owner: str, verbose: bool = False, token: str | None = None
+    filepath: str | Path,
+    *,
+    owner: str,
+    verbose: bool = False,
+    token: str | None = None,
+    debug: bool = False,
 ) -> None:
     """Publish a conda package as an OCI artifact to `ghcr.io`.
 
@@ -21,6 +26,9 @@ def publish_oci_artifact(
     token = token or os.environ["GITHUB_TOKEN"]
     os.environ["GHA_PAT"] = token
     os.environ["GHA_USER"] = owner
+    if debug:
+        print(f"GHA_USER = {os.environ['GHA_USER']!r}")
+        print(f"GHA_PAT = {os.environ['GHA_PAT']!r}")
     filepath = Path(filepath)
     filename, version, buildstr = filepath.stem.rsplit("-", maxsplit=2)
     cmd = ["powerloader upload"]
