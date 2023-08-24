@@ -122,11 +122,17 @@ def build(
         "If not specified, the `GITHUB_TOKEN` env var will be used."
     ),
 )
+@click.option(
+    "--debug",
+    is_flag=True,
+    default=False,
+)
 def publish(
     filepath,
     owner,
     verbose,
     token,
+    debug,
 ) -> None:
     """Publish a conda package as an OCI artifact to `ghcr.io`."""
     publish_oci_artifact(
@@ -134,4 +140,5 @@ def publish(
         owner=owner,
         verbose=verbose,
         token=token,
+        debug=debug,
     )
