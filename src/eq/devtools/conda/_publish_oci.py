@@ -28,7 +28,7 @@ def publish_oci_artifact(
         default=os.environ.get("GITHUB_TOKEN")
     )
     if token is None:
-        msg = "The `GITHUB_TOKEN` environment variable need to be set!"
+        msg = "The `GITHUB_TOKEN` environment variable needs to be set!"
         raise RuntimeError(msg)
     os.environ["GHA_PAT"] = token
     os.environ["GHA_USER"] = owner
