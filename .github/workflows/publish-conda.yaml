@@ -1,0 +1,41 @@
+name: publish/conda
+run-name: ${{
+    format(
+      '[{0}] publish/conda',
+      (github.event_name == 'pull_request' && format('pr/{0}', github.event.number)) ||
+      (github.event_name == 'push' && github.ref_name) ||
+      (github.event_name == 'release' && github.event.release.tag_name) ||
+      github.event_name
+    )
+  }}
+
+
+on:
+  workflow_run:
+    workflows: ['build/conda']
+    types:
+      - completed
+
+
+jobs:
+  build_package:
+    name: Publish Conda Package
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    uses: energy-quants/.github/.github/workflows/publish-conda.yml@main
+    secrets:
+      token: ${{ secrets.CI_PACKAGES }}
+  set_status:
+    name: set_status
+    if: ${{ github.event.workflow_run.event == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: set_pending
+        name: Set Pending Status
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pr=$(gh pr list --repo='${{ github.repository }}' --head='${{ github.event.workflow_run.head_branch }}' --json='number' --jq='.[].number')
+          echo '################################################'
+          echo "Pull Request = $pr"
+          echo '################################################'

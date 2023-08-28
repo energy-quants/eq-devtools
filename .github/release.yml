@@ -1,0 +1,26 @@
+# Release Notes Template
+# https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes#configuring-automatically-generated-release-notes
+
+changelog:
+  categories:
+    - title: New Features Added
+      labels:
+        - 'kind: feature request'
+    - title: Enhanced Functionality
+      labels:
+        - 'kind: enhancement'
+    - title: Security Issues Resolved
+      labels:
+        - 'area: security'
+    - title: Bugs Fixed
+      labels:
+        - 'kind: bug'
+    - title: Documentation Improvements
+      labels:
+        - 'kind: docs'
+    - title: Packaging & Deployment Improvements
+      labels:
+        - 'kind: packaging'
+    - title: Other Miscellaneous Changes
+      labels:
+        - "*"
