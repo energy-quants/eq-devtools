@@ -14,18 +14,8 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
-    steps:
-      - id: checkout_source
-        name: Checkout Source
-        # https://github.com/actions/checkout
-        uses: actions/checkout@v3
-
-      - id: create_release
-        name: Create Release
-        # https://github.com/softprops/action-gh-release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: "Release ${{ github.ref_name }}"
-          draft: true
-          generate_release_notes: true
+    name: Create Release
+    uses: energy-quants/.github/.github/workflows/create-release.yml@main
+    with:
+      tag: ${{ github.ref_name }}
+      draft: true
