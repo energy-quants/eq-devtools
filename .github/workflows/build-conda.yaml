@@ -30,3 +30,5 @@ jobs:
   build_package:
     name: Build Conda Package
     uses: energy-quants/.github/.github/workflows/build-conda.yml@main
+    with:
+      python-version: '["3.11"]'
