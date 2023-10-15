@@ -1,11 +1,11 @@
-import click
-import trio
-import wrapt
 from functools import partial
 
+import click
 import msgspec
-from rich.pretty import pprint
+import trio
+import wrapt
 from rich import print_json
+from rich.pretty import pprint
 
 from eq.devtools.github import packages as pkgs
 
@@ -17,17 +17,17 @@ def packages():
 
 @wrapt.decorator
 def run_async(async_fn, instance, args, kwargs):
-    json = kwargs.pop('json', False)
+    json = kwargs.pop("json", False)
     res = trio.run(partial(async_fn, *args, **kwargs))
     if json:
-        json = msgspec.json.encode(res).decode('utf-8')
+        json = msgspec.json.encode(res).decode("utf-8")
         print_json(json)
     else:
         if res is not None:
             pprint(res)
 
 
-@packages.command(name='list')
+@packages.command(name="list")
 @click.option(
     "--owner",
     type=str,
@@ -46,7 +46,7 @@ async def list_packages(owner: str):
     return res
 
 
-@packages.command(name='delete')
+@packages.command(name="delete")
 @click.option(
     "--owner",
     type=str,
@@ -81,7 +81,7 @@ async def delete(
     deleted = []
     limiter = limiter or trio.CapacityLimiter(50)
     async with trio.open_nursery() as nursery:
-        for version_id in ids.split(','):
+        for version_id in ids.split(","):
             version_id = version_id.strip()
             if not version_id:
                 continue

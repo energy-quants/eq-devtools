@@ -3,11 +3,11 @@ from urllib.parse import quote_plus
 
 from .api import (
     Package,
-    PackageVersion
+    PackageVersion,
 )
 from .client import (
     delete,
-    get
+    get,
 )
 
 
@@ -21,38 +21,27 @@ __all__ = (
 
 async def list_packages(owner: str, **kwargs) -> list[Package]:
     res = await get(
-        f"orgs/{owner}/packages?package_type=container",
-        model=list[Package],
-        **kwargs
+        f"orgs/{owner}/packages?package_type=container", model=list[Package], **kwargs
     )
     return cast(list[Package], res)
 
 
-
-async def get_package(
-    owner: str,
-    package: str,
-    **kwargs
-) -> Package:
-
+async def get_package(owner: str, package: str, **kwargs) -> Package:
     res = await get(
         f"orgs/{owner}/packages/container/{quote_plus(package)}",
         model=Package,
-        **kwargs
+        **kwargs,
     )
     return cast(Package, res)
 
 
 async def list_package_versions(
-    owner: str,
-    package: str,
-    **kwargs
+    owner: str, package: str, **kwargs
 ) -> list[PackageVersion]:
-
     res = await get(
         f"/orgs/{owner}/packages/container/{quote_plus(package)}/versions",
         model=list[PackageVersion],
-        **kwargs
+        **kwargs,
     )
     for package_version in res:
         package_version.package = package
@@ -69,13 +58,9 @@ setattr(Package, "versions", property(_get_versions))
 
 
 async def delete_package_version(
-    owner: str,
-    package: str,
-    *,
-    version_id: int,
-    **kwargs
+    owner: str, package: str, *, version_id: int, **kwargs
 ) -> None:
     await delete(
         f"/orgs/{owner}/packages/container/{quote_plus(package)}/versions/{version_id:d}",
-        **kwargs
+        **kwargs,
     )

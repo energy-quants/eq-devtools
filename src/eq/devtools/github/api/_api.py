@@ -1,11 +1,14 @@
 from collections.abc import Generator
 from datetime import datetime as DateTime
-from typing import Any, cast, Protocol
+from typing import (
+    Any,
+    cast,
+    Protocol,
+)
 
 import tzlocal
 from msgspec import Struct
 from rich.repr import Result as RichRepr
-
 
 
 TZ_LOCAL = tzlocal.get_localzone()
@@ -31,7 +34,7 @@ def parse_repr(obj: HasRichRepr) -> Generator[str, None, None]:
 
 class APIObject(Struct):
     def __repr__(self) -> str:
-        if hasattr(self, '__rich_repr__'):
+        if hasattr(self, "__rich_repr__"):
             return f"{self.__class__.__name__}({', '.join(parse_repr(self))})"
         else:
             return object.__repr__(self)
@@ -91,10 +94,10 @@ class Package(APIObject):
 
 
 def normalise_tag(arg: str) -> str:
-    return arg.lower().removesuffix('metadata')
+    return arg.lower().removesuffix("metadata")
 
 
-class _PackageMetadata(APIObject, tag_field='package_type', tag=normalise_tag):
+class _PackageMetadata(APIObject, tag_field="package_type", tag=normalise_tag):
     pass
 
 
@@ -104,7 +107,7 @@ class ContainerMetadata(_PackageMetadata):
     def __getattr__(self, name) -> Any:
         try:
             return self.container[name]
-        except KeyError as exc:
+        except KeyError:
             msg = f"{self.__class__.__name__!r} has no attribute {name!r}"
             raise AttributeError(msg) from None
 
@@ -120,7 +123,9 @@ class DockerMetadata(_PackageMetadata):
     docker: dict
 
 
-PackageMetadata = ContainerMetadata | DockerMetadata #reduce(op.or_, _PackageMetadata.__subclasses__())
+PackageMetadata = (
+    ContainerMetadata | DockerMetadata
+)  # reduce(op.or_, _PackageMetadata.__subclasses__())
 
 
 class PackageVersion(APIObject):

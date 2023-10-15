@@ -2,8 +2,8 @@ import click
 
 from .. import __version__
 from ._conda import conda
-from .github import github
 from ._test import test
+from .github import github
 
 
 __all__ = ("cli",)
