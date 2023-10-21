@@ -3,6 +3,7 @@ import click
 from .. import __version__
 from ._conda import conda
 from ._test import test
+from .github import github
 
 
 __all__ = ("cli",)
@@ -19,3 +20,4 @@ def cli():
 
 cli.add_command(test)
 cli.add_command(conda)
+cli.add_command(github)
