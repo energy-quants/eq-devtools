@@ -92,19 +92,30 @@ known_first_party = ["eq.devtools"]
 
 
 [tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
 # https://beta.ruff.rs/docs/rules/
 select = [
   "E",  # pycodestyle
   "F",  # pyflakes
   # "I",  # can't yet match isort config
 ]
-line-length = 120
+
+[tool.ruff.format]
+preview = true
+quote-style = "double"
+indent-style = "space"
+# magic-trailing-comma = "respect"
+line-ending = "lf"
 
 [tool.ruff.pydocstyle]
 convention = "numpy"
 
 [tool.ruff.per-file-ignores]
-"__init__.py" = ["F401"]
+"__init__.py" = [
+  "F401",  # https://www.flake8rules.com/rules/F401.html
+]
 
 [tool.ruff.isort]
 combine-as-imports = false
