@@ -5,7 +5,7 @@ changelog:
   categories:
     - title: New Features Added
       labels:
-        - 'kind: feature request'
+        - 'kind: feature'
     - title: Enhanced Functionality
       labels:
         - 'kind: enhancement'
@@ -21,6 +21,7 @@ changelog:
     - title: Packaging & Deployment Improvements
       labels:
         - 'kind: packaging'
+        - 'area: ci'
     - title: Other Miscellaneous Changes
       labels:
         - "*"
