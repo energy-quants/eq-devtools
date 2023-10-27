@@ -144,10 +144,12 @@ def _render_recipe(
     recipe["source"]["path"] = Path(source_path).as_posix()
     recipe["build"]["noarch"] = "python"
     recipe["build"]["number"] = build_number
-    script = dedent("""
+    script = dedent(
+        """
     set -euxo pipefail
     python -m pip install -vv --no-deps --no-build-isolation .
-    """).lstrip()
+    """
+    ).lstrip()
     recipe["build"]["script"] = PreservedScalarString(script)
     requirements = _parse_requirements()
     recipe["requirements"] = {

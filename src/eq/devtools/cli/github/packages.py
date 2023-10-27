@@ -132,10 +132,10 @@ async def cleanup(
     max_age: int,
 ):
     deleted = await pkgs.cleanup_package_versions(
-        owner = owner,
-        package = package,
-        tags_to_keep = ['latest', r'\d+\.\d+\.\d+'],
-        max_age = max_age,
+        owner=owner,
+        package=package,
+        tags_to_keep=["latest", r"\d+\.\d+\.\d+"],
+        max_age=max_age,
         max_parallel=30,
     )
     return dict(deleted=deleted, errors={})

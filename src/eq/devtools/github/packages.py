@@ -26,16 +26,14 @@ __all__ = (
 
 async def list_packages(owner: str, **kwargs) -> list[Package]:
     # https://docs.github.com/en/rest/packages/packages#list-packages-for-an-organization
-    kwargs.setdefault('model', list[Package])
-    res = await get(
-        f"orgs/{owner}/packages?package_type=container", **kwargs
-    )
+    kwargs.setdefault("model", list[Package])
+    res = await get(f"orgs/{owner}/packages?package_type=container", **kwargs)
     return cast(list[Package], res)
 
 
 async def get_package(owner: str, package: str, **kwargs) -> Package:
     # https://docs.github.com/en/rest/packages/packages#get-a-package-for-an-organization
-    kwargs.setdefault('model', Package)
+    kwargs.setdefault("model", Package)
     res = await get(
         f"orgs/{owner}/packages/container/{quote_plus(package)}",
         **kwargs,
@@ -46,10 +44,10 @@ async def get_package(owner: str, package: str, **kwargs) -> Package:
 async def list_package_versions(
     owner: str,
     package: str,
-    **kwargs
+    **kwargs,
 ) -> list[PackageVersion]:
     # https://docs.github.com/en/rest/packages/packages#list-package-versions-for-a-package-owned-by-an-organization
-    model = kwargs.pop('model', None)
+    model = kwargs.pop("model", None)
     has_model = model is not None
     model = model or list[PackageVersion]
     res = await get(
@@ -94,6 +92,7 @@ async def _delete(self) -> None:
         version_id=self.id,
     )
 
+
 PackageVersion.delete = _delete
 
 
@@ -123,7 +122,7 @@ async def cleanup_package_versions(
     owner: str,
     package: str,
     *,
-    tags_to_keep: list[str] = ['latest', r'\d+\.\d+\.\d+'],
+    tags_to_keep: list[str] = ["latest", r"\d+\.\d+\.\d+"],
     max_age: int = 7,
     max_parallel: int = 30,
     **kwargs,
@@ -136,10 +135,13 @@ async def cleanup_package_versions(
         return age > max_age
 
     versions_to_delete = [
-        package_version for package_version
-        in await list_package_versions(owner, package, **kwargs)
+        package_version
+        for package_version in await list_package_versions(owner, package, **kwargs)
         if has_expired(package_version)
         and not any(map(tags_to_keep.match, package_version.metadata.tags))
     ]
-    deleted = await delete_package_versions(*versions_to_delete, max_parallel=max_parallel)
+    deleted = await delete_package_versions(
+        *versions_to_delete,
+        max_parallel=max_parallel,
+    )
     return deleted

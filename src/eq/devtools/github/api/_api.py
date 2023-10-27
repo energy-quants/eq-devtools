@@ -18,8 +18,7 @@ TZ_LOCAL = tzlocal.get_localzone()
 
 
 class HasRichRepr(Protocol):
-    def __rich_repr__(self) -> RichRepr:
-        ...
+    def __rich_repr__(self) -> RichRepr: ...
 
 
 def parse_repr(obj: HasRichRepr) -> Generator[str, None, None]:
