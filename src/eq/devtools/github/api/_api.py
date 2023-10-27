@@ -7,7 +7,10 @@ from typing import (
 )
 
 import tzlocal
-from msgspec import Struct
+from msgspec import (
+    field,
+    Struct,
+)
 from rich.repr import Result as RichRepr
 
 
@@ -15,8 +18,7 @@ TZ_LOCAL = tzlocal.get_localzone()
 
 
 class HasRichRepr(Protocol):
-    def __rich_repr__(self) -> RichRepr:
-        ...
+    def __rich_repr__(self) -> RichRepr: ...
 
 
 def parse_repr(obj: HasRichRepr) -> Generator[str, None, None]:
@@ -44,6 +46,9 @@ class _Account(APIObject):
     id: int
     node_id: str
     login: str
+
+    def __str__(self) -> str:
+        return self.login
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.login!r})"
@@ -85,6 +90,9 @@ class Package(APIObject):
     created_at: DateTime
     updated_at: DateTime
     repository: Repository
+
+    def __str__(self) -> str:
+        return self.name
 
     def __rich_repr__(self) -> RichRepr:  # type: ignore
         yield self.name
@@ -130,15 +138,15 @@ PackageMetadata = (
 
 class PackageVersion(APIObject):
     id: int
-    name: str
+    digest: str = field(name="name")
     url: str
     created_at: DateTime
     updated_at: DateTime
     metadata: PackageMetadata
-    package: str | None = None
+    package: Package | None = None
 
     def __rich_repr__(self) -> RichRepr:  # type: ignore
-        yield self.package
+        yield str(self.package)
         yield "id", self.id
         yield "updated_at", self.updated_at.astimezone(TZ_LOCAL).isoformat()
         yield "metadata", self.metadata

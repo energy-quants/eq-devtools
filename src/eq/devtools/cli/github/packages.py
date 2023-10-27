@@ -97,4 +97,45 @@ async def delete(
                 )
             deleted.append(version_id)
 
-    print_json(data=dict(deleted=deleted, errors={}))
+    return dict(deleted=deleted, errors={})
+
+
+@packages.command(name="cleanup")
+@click.option(
+    "--owner",
+    type=str,
+    required=True,
+    help="The owner of the package to delete.",
+)
+@click.option(
+    "--package",
+    type=str,
+    required=True,
+    help="The name of the package to delete.",
+)
+@click.option(
+    "--max-age",
+    type=int,
+    default=7,
+    help="The age (in days) after which the package may be deleted.",
+)
+@click.option(
+    "--json",
+    type=str,
+    is_flag=True,
+    help="Whether to print the result as JSON.",
+)
+@run_async
+async def cleanup(
+    owner: str,
+    package: str,
+    max_age: int,
+):
+    deleted = await pkgs.cleanup_package_versions(
+        owner=owner,
+        package=package,
+        tags_to_keep=["latest", r"\d+\.\d+\.\d+"],
+        max_age=max_age,
+        max_parallel=30,
+    )
+    return dict(deleted=deleted, errors={})
