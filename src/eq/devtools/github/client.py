@@ -38,7 +38,8 @@ async def _request(
     )
     if httpx.codes.is_error(status):
         msg = msgspec.json.decode(content)["message"]
-        raise httpx.HTTPError(f"{status}: {msg}")
+        msg = f"{status}: {msg}\nurl = {url!r}"
+        raise httpx.HTTPError(msg)
 
     return status, headers, content
 
