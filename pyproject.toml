@@ -57,7 +57,7 @@ test = ["requirements/pypi/test.txt"]
 # https://docs.pytest.org/en/7.1.x/reference/reference.html#ini-options-ref
 minversion = "7.3"
 testpaths = ["tests"]
-addopts = "-lvs --tb=short --color=yes --code-highlight=yes --import-mode=importlib --doctest-modules --doctest-continue-on-failure --html=.build/conda/test/html/test-report.html --self-contained-html --junit-xml=.build/conda/test/test-results.xml  --cov=src/eq/devtools --cov-report=html:.build/conda/test/html/cov --cov-report=xml:.build/conda/test/coverage.xml"
+addopts = "-lv --tb=short --color=yes --code-highlight=yes --import-mode=importlib --doctest-modules --doctest-continue-on-failure --html=.build/conda/test/html/test-report.html --self-contained-html --junit-xml=.build/conda/test/test-results.xml  --cov=src/eq/devtools --cov-report=html:.build/conda/test/html/cov --cov-report=xml:.build/conda/test/coverage.xml"
 junit_family = "xunit2"
 log_cli = true
 log_cli_level = "INFO"
@@ -103,10 +103,10 @@ select = [
 ]
 
 [tool.ruff.format]
+# https://docs.astral.sh/ruff/formatter/#configuration
 preview = true
 quote-style = "double"
 indent-style = "space"
-# magic-trailing-comma = "respect"
 line-ending = "lf"
 
 [tool.ruff.pydocstyle]

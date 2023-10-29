@@ -92,7 +92,7 @@ def _parse_requirements() -> dict[str, list[str]]:
     utils._canonicalize_regex = re.compile(r"[-_]+", re.UNICODE)
 
     requirements = defaultdict(list[str])
-    for filepath in Path("requirements/").glob("**/*.txt"):
+    for filepath in Path("requirements.d/").glob("**/*.txt"):
         deps, _ = load_requirements_files([filepath.as_posix()])
         requirements[filepath.stem].extend(
             [f"{dep.name} {dep.specifier}".strip() for dep in deps]
