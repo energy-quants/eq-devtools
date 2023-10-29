@@ -44,13 +44,13 @@ targets.sdist.strict-naming = false
 targets.sdist.packages = ["/src/eq"]
 
 [tool.hatch.metadata.hooks.requirements_txt]
-files = ["requirements/pypi/run.txt"]
+files = ["requirements.d/pypi/run.txt"]
 
 [tool.hatch.metadata.hooks.requirements_txt.optional-dependencies]
-dev = ["requirements/pypi/dev.txt"]
-docs = ["requirements/pypi/docs.txt"]
-host = ["requirements/pypi/host.txt"]
-test = ["requirements/pypi/test.txt"]
+dev = ["requirements.d/pypi/dev.txt"]
+docs = ["requirements.d/pypi/docs.txt"]
+host = ["requirements.d/pypi/host.txt"]
+test = ["requirements.d/pypi/test.txt"]
 
 
 [tool.pytest.ini_options]
