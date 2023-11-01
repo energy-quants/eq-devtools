@@ -9,9 +9,7 @@ from eq.devtools.conda import (
 )
 
 
-__all__ = (
-    "conda",
-)
+__all__ = ("conda",)
 
 
 @click.group()

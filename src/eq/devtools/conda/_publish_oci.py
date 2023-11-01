@@ -38,7 +38,7 @@ def publish_oci_artifact(
     cmd = ["powerloader upload"]
     if verbose:
         cmd += ["-v"]
-    tag = tag or version.replace('+', '-')
+    tag = tag or version.replace("+", "-")
     cmd += [
         f"{filepath}:conda/{filename}:{tag}",
         "-m oci://ghcr.io",
