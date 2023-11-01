@@ -46,6 +46,34 @@ async def list_packages(owner: str):
     return res
 
 
+@packages.command(name="list-versions")
+@click.option(
+    "--owner",
+    type=str,
+    required=True,
+    help="The owner to list packages for.",
+)
+@click.option(
+    "--package",
+    type=str,
+    required=True,
+    help="The name of the package to delete.",
+)
+@click.option(
+    "--json",
+    type=str,
+    is_flag=True,
+    help="Whether to print the result as JSON.",
+)
+@run_async
+async def list_package_versions(owner: str, package: str):
+    res = await pkgs.list_package_versions(
+        owner=owner,
+        package=package,
+    )
+    return res
+
+
 @packages.command(name="delete")
 @click.option(
     "--owner",
