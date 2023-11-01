@@ -12,6 +12,7 @@ def publish_oci_artifact(
     filepath: str | Path,
     *,
     owner: str,
+    tag: str | None = None,
     verbose: bool = False,
     token: str | None = None,
     debug: bool = False,
@@ -37,8 +38,9 @@ def publish_oci_artifact(
     cmd = ["powerloader upload"]
     if verbose:
         cmd += ["-v"]
+    tag = tag or version.replace('+', '-')
     cmd += [
-        f"{filepath}:conda/{filename}:{version.replace('+', '-')}",
+        f"{filepath}:conda/{filename}:{tag}",
         "-m oci://ghcr.io",
     ]
     cmd = " ".join(cmd)
