@@ -17,7 +17,7 @@ def conda():
     pass
 
 
-@conda.command()
+@conda.command(name="render")
 @click.option(
     "--version",
     type=str,
@@ -62,7 +62,7 @@ def render(
     )
 
 
-@conda.command()
+@conda.command(name="build")
 @click.option(
     "--recipe-file",
     type=Optional[str],
@@ -98,7 +98,7 @@ def build(
     )
 
 
-@conda.command()
+@conda.command(name="publish")
 @click.option(
     "--filepath", type=str, help="The filepath to the `.conda` package to publish."
 )
@@ -108,10 +108,17 @@ def build(
     help="The GitHub user or organisation to publish the package to.",
 )
 @click.option(
+    "--tag",
+    type=str,
+    default=None,
+    help="An optional tag to use instead of the package version.",
+)
+@click.option(
     "-v",
     "--verbose",
     is_flag=True,
     default=False,
+    help="A flag to enable verbose output for the `powerloader` command.",
 )
 @click.option(
     "--token",
@@ -130,6 +137,7 @@ def build(
 def publish(
     filepath,
     owner,
+    tag,
     verbose,
     token,
     debug,
@@ -138,6 +146,7 @@ def publish(
     publish_oci_artifact(
         filepath=filepath,
         owner=owner,
+        tag=tag,
         verbose=verbose,
         token=token,
         debug=debug,

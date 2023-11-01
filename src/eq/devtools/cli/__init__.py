@@ -1,8 +1,8 @@
 import click
 
 from .. import __version__
-from ._conda import conda
 from ._test import test
+from .conda import conda
 from .github import github
 
 
