@@ -1,0 +1,87 @@
+name: cleanup/packages
+run-name: ${{
+    format(
+      '[{0}] cleanup/packages',
+      (github.event_name == 'pull_request' && format('pr/{0}', github.event.number)) ||
+       github.event_name
+    )
+  }}
+
+
+on:
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch
+  workflow_dispatch:
+
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
+  schedule:
+    - cron: '23 5 * * *'
+
+
+jobs:
+  debug:
+    name: Show Debug Info
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - id: show_debug_info
+        name: Show Debug Info
+        shell: bash
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          # Show Debug Info
+          echo "::group::User Info"
+          id
+          echo "::endgroup::"
+          echo "::group::GitHub Context"
+          echo "${GITHUB_CONTEXT}"
+          echo "::endgroup::"
+          echo "::group::Environment Variables"
+          unset GITHUB_CONTEXT
+          env | sort
+          echo "::endgroup::"
+          echo "::group::Git Info"
+          which git
+          git --version
+          echo "::endgroup::"
+
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - id: setup_micromamba
+        name: Create Python Environment
+        # https://github.com/mamba-org/setup-micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          micromamba-version: '1.5.1-0'
+          cache-environment: true
+          condarc: |
+            channels:
+              - conda-forge
+              - energy-quants
+          environment-name: cleanup
+          create-args: >-
+            eq-devtools>=0.6.0
+            ruamel.yaml>=0.17.32,<0.18
+
+      - id: build_package
+        name: Build Package
+        shell: bash -l {0}
+        run: |
+          set -euox pipefail
+          devtool --version
+          packages=$(
+            devtool github packages list --owner 'energy-quants' --json \
+            | jq '.[] | select(.repository.full_name == "energy-quants/eq-devtools") | .name'
+          )
+          for package in $packages; do
+            echo $package
+            # devtool github packages cleanup --owner 'energy-quants' --package "${package}"
+          done
