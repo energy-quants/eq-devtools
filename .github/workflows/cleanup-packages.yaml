@@ -76,14 +76,15 @@ jobs:
         shell: bash -l {0}
         env:
           GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.CI_PACKAGES }}
         run: |
           set -euox pipefail
           devtool --version
           packages=$(
             devtool github packages list --owner 'energy-quants' --json \
-            | jq '.[] | select(.repository.full_name == "energy-quants/eq-devtools") | .name'
+            | jq -r '.[] | select(.repository.full_name == "energy-quants/eq-devtools") | .name'
           )
           for package in $packages; do
-            echo $package
-            # devtool github packages cleanup --owner 'energy-quants' --package "${package}"
+            # devtool github packages list-versions --owner 'energy-quants' --package "${package}"
+            devtool github packages cleanup --owner 'energy-quants' --package "${package}" --max-age=-1
           done
