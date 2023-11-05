@@ -71,9 +71,11 @@ jobs:
             eq-devtools>=0.6.0
             ruamel.yaml>=0.17.32,<0.18
 
-      - id: build_package
-        name: Build Package
+      - id: cleanup_packages
+        name: Cleanup Packages
         shell: bash -l {0}
+        env:
+          GITHUB_USER: ${{ github.actor }}
         run: |
           set -euox pipefail
           devtool --version
